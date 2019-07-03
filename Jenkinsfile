@@ -28,7 +28,7 @@ podTemplate(
         )
     ]
 ) {
-    node('mypod') {
+    node('kube-master.omegatravel.net') {
         def commitId
         stage ('Extract') {
             checkout scm
