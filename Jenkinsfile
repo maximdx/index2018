@@ -57,6 +57,7 @@ podTemplate(
         stage ('Deploy') {
             container ('helm') {
                 sh "helm init --client-only --skip-refresh"
+		sh "helm version"
 	        sh "helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
             }
         }
