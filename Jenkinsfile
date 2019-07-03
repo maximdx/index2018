@@ -45,6 +45,7 @@ podTemplate(
                 sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .'
             }
         }
+/*
         def repository
         stage ('Docker') {
             container ('docker') {
@@ -59,5 +60,6 @@ podTemplate(
                 sh "/helm upgrade --install --wait --set image.repository=${repository},image.tag=${commitId} hello hello"
             }
         }
+*/
     }
 }
