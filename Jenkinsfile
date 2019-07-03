@@ -28,7 +28,13 @@ podTemplate(
         )
     ]
 ) {
-    node('master') {
+    node('mypod') {
+	environment {
+	    registry = 'xiduan/hello'
+	    registryCredential = 'dockerhub'
+	    dockerImage = ''
+	}
+
         def commitId
         stage ('Extract') {
             checkout scm
@@ -42,10 +48,9 @@ podTemplate(
         def repository
         stage ('Docker') {
             container ('docker') {
-                def registryIp = sh(script: 'getent hosts registry.kube-system | awk \'{ print $1 ; exit }\'', returnStdout: true).trim()
-                repository = "${registryIp}:80/hello"
-                sh "docker build -t ${repository}:${commitId} ."
-                sh "docker push ${repository}:${commitId}"
+		dockerImage = docker.build registry + "${commitId}"
+		docker.withRegistry('', registryCredential)
+	        dockerImega.push()
             }
         }
         stage ('Deploy') {
