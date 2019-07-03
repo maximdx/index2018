@@ -50,7 +50,7 @@ podTemplate(
             container ('docker') {
 		dockerImage = docker.build("xiduan/hello:${commitId}")
 		docker.withRegistry('', 'dockerhub') {
-	            dockerImega.push()
+	            dockerImage.push()
 		}
             }
         }
