@@ -45,19 +45,19 @@ podTemplate(
                 sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .'
             }
         }
-/*
         def repository
         stage ('Docker') {
             container ('docker') {
-		dockerImage = docker.build registry + "${commitId}"
+		dockerImage = docker.build xiduan/hello + "${commitId}"
 		docker.withRegistry('', registryCredential)
 	        dockerImega.push()
             }
         }
+/*
         stage ('Deploy') {
             container ('helm') {
                 sh "/helm init --client-only --skip-refresh"
-                sh "/helm upgrade --install --wait --set image.repository=${repository},image.tag=${commitId} hello hello"
+                sh "/helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
             }
         }
 */
