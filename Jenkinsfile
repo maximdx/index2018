@@ -48,7 +48,7 @@ podTemplate(
         def repository
         stage ('Docker') {
             container ('docker') {
-		dockerImage = docker.build xiduan/hello + "${commitId}"
+		dockerImage = docker.build("xiduan/hello:${commitId}")
 		docker.withRegistry('', registryCredential)
 	        dockerImega.push()
             }
