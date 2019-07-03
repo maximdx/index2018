@@ -16,7 +16,7 @@ podTemplate(
         ),
         containerTemplate(
             name: 'helm', 
-            image: 'ibmcom/k8s-helm:v2.6.0',
+            image: 'ibmcom/k8s-helm:v2.14.1',
             ttyEnabled: true,
             command: 'cat'
         )
@@ -45,7 +45,6 @@ podTemplate(
                 sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .'
             }
         }
-        def repository
         stage ('Docker') {
             container ('docker') {
 		dockerImage = docker.build("xiduan/hello:${commitId}")
@@ -54,13 +53,14 @@ podTemplate(
 		}
             }
         }
-/*
+
         stage ('Deploy') {
             container ('helm') {
                 sh "/helm init --client-only --skip-refresh"
-                sh "/helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
+		docker.withRegistry('', 'dockerhub') {
+                    sh "/helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
+		}
             }
         }
-*/
     }
 }
