@@ -16,7 +16,7 @@ podTemplate(
         ),
         containerTemplate(
             name: 'helm', 
-            image: 'ibmcom/k8s-helm:v2.6.0',
+            image: 'alpine/helm:2.14.0',
             ttyEnabled: true,
             command: 'cat'
         )
@@ -56,9 +56,9 @@ podTemplate(
 
         stage ('Deploy') {
             container ('helm') {
-                sh "/helm init --client-only --skip-refresh"
-		sh "/helm version"
-	        sh "/helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
+                sh "helm init --client-only --skip-refresh --tiller-namespace kube-system"
+		sh "helm version"
+	        sh "helm upgrade --install --wait --set image.repository=xiduan/hello,image.tag=${commitId} hello hello"
             }
         }
     }
